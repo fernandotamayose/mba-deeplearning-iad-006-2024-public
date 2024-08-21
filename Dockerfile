@@ -1,5 +1,5 @@
 # Use an official Python image as the base
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # Set the working directory to /app
 WORKDIR /app
@@ -8,7 +8,11 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install the dependencies
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir uvicorn fastapi opencv-python python-multipart
 
 # Copy the application code
 COPY . /app/
